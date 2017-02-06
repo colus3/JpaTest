@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.domain.MemberRepository;
+import com.example.domain.TeamRepository;
 import com.example.domain.User;
 import com.example.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import java.util.List;
 public class MainController {
 
     @Autowired private UserRepository userRepository;
+    @Autowired private MemberRepository memberRepository;
+    @Autowired private TeamRepository teamRepository;
 
     @RequestMapping
     @ResponseBody
