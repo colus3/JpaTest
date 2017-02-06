@@ -1,14 +1,17 @@
 package com.example.controller;
 
 import com.example.domain.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +19,7 @@ import java.util.List;
  * Created by colus on 2017. 1. 12..
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("update")
+@ActiveProfiles("create")
 @SpringBootTest
 @WebAppConfiguration
 public class MainController2Test {
@@ -27,28 +30,42 @@ public class MainController2Test {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Before
+    public void setUp() throws Exception {
+        teamRepository.save(new Team("Red"));
+        teamRepository.save(new Team("Blue"));
+    }
+
     @Test
     public void testMemberSearch() throws Exception {
 
-//        teamRepository.save(new Team("blue"));
+        Team team = teamRepository.findByName("Blue");
 
-        Team team = teamRepository.findByName("blue");
+        memberRepository.save(new Member("Donghwan Lee", team));
 
         Member donghwanLee = memberRepository.findByUsername("Donghwan Lee");
 
-        donghwanLee.setTeam(team);
 
-        System.out.println(donghwanLee.getUsername() + " " + donghwanLee.getTeam().getName());
+        System.out.println(donghwanLee.getId() + " " + donghwanLee.getUsername() + " : " + team.getName());
 
     }
 
     @Test
     public void testTeamInsert() throws Exception {
-        Team team = teamRepository.findByName("blue");
 
-        Member member = memberRepository.findByUsername("Donghwan Lee");
+        Team green = new Team("Green");
+        teamRepository.save(green);
 
-        team.setMembers(Arrays.asList(member));
+        System.out.println("team : " + green.getName());
+
+        Member donghwanChoi = new Member("Donghwan Choi", green);
+
+        memberRepository.save(donghwanChoi);
+
+        Member member = memberRepository.findByUsername("Donghwan Choi");
+
+        System.out.println(member.getUsername() + " : " + member.getTeam().getName());
+
 
     }
 }
