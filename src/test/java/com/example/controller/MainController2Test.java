@@ -1,6 +1,9 @@
 package com.example.controller;
 
-import com.example.domain.*;
+import com.example.domain.member.Member;
+import com.example.domain.member.MemberRepository;
+import com.example.domain.Team;
+import com.example.domain.TeamRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by colus on 2017. 1. 12..
@@ -21,7 +24,6 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("create")
 @SpringBootTest
-@WebAppConfiguration
 public class MainController2Test {
 
     @Autowired
@@ -37,35 +39,60 @@ public class MainController2Test {
     }
 
     @Test
-    public void testMemberSearch() throws Exception {
+    @Transactional
+    @Rollback(false)
+    public void testMemberInsert() throws Exception {
 
-        Team team = teamRepository.findByName("Blue");
+        Team blueTeam = teamRepository.findByName("Blue");
+        System.out.println(blueTeam.getName());
+        Member member = new Member();
+        member.setUsername("Donghwan Lee");
+        member.setTeam(blueTeam);
+        memberRepository.save(member);
 
-        memberRepository.save(new Member("Donghwan Lee", team));
-
-        Member donghwanLee = memberRepository.findByUsername("Donghwan Lee");
-
-
-        System.out.println(donghwanLee.getId() + " " + donghwanLee.getUsername() + " : " + team.getName());
-
+        assertEquals(member.getUsername(), "Donghwan Lee");
     }
 
     @Test
+    @Transactional
+    @Rollback(false)
     public void testTeamInsert() throws Exception {
 
         Team green = new Team("Green");
         teamRepository.save(green);
 
-        System.out.println("team : " + green.getName());
+        assertEquals("Green", teamRepository.findByName("Green").getName());
+    }
 
-        Member donghwanChoi = new Member("Donghwan Choi", green);
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void testMemberInsertByTeam() throws Exception {
 
-        memberRepository.save(donghwanChoi);
+        Team green = new Team("Green");
+        Member member = new Member("Donghwan Choi", green);
+        green.getMembers().add(member);
+        teamRepository.save(green);
 
-        Member member = memberRepository.findByUsername("Donghwan Choi");
+        assertEquals("Donghwan Choi", green.getMembers().get(0).getUsername());
+        Member donghwanChoi = memberRepository.findByUsername("Donghwan Choi");
 
-        System.out.println(member.getUsername() + " : " + member.getTeam().getName());
+        assertNull(donghwanChoi);
+    }
 
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void testTeamInsertByMember() throws Exception {
 
+        Team yellow = new Team("Yellow");
+        teamRepository.save(yellow);
+        Member member = new Member("Donghwan Lee", yellow);
+        yellow.getMembers().add(member);
+        memberRepository.save(member);
+
+        Team yellowTeam = teamRepository.findByName("Yellow");
+        assertNotNull(yellowTeam);
+        assertEquals("Yellow", yellowTeam.getName());
     }
 }

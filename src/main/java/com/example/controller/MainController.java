@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.domain.MemberRepository;
+import com.example.domain.member.MemberRepository;
 import com.example.domain.TeamRepository;
 import com.example.domain.User;
 import com.example.domain.UserRepository;

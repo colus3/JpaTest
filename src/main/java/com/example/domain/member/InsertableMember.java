@@ -1,4 +1,6 @@
-package com.example.domain;
+package com.example.domain.member;
+
+import com.example.domain.Team;
 
 import javax.persistence.*;
 
@@ -7,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="MEMBER")
-public class Member {
+public class InsertableMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,14 +18,14 @@ public class Member {
 
     private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", nullable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TEAM_ID", insertable = true, updatable = false)
     private Team team;
 
-    public Member() {
+    public InsertableMember() {
     }
 
-    public Member(String username, Team team) {
+    public InsertableMember(String username, Team team) {
         this.username = username;
         this.team = team;
     }
@@ -50,5 +52,10 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
+        team.getInsertableMembers().add(this);
+    }
+
+    public String toString() {
+        return String.format("%d : %s : %s", id, username, team.getName());
     }
 }
