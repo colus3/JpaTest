@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
 
@@ -34,6 +35,8 @@ public class UpdatableMemberTest {
     private UpdatableMemberRepository updatableMemberRepository;
 
     @Test
+    @Transactional
+    @Rollback(false)
     public void testInsertMember() throws Exception {
 
         final String userName = "member1";
@@ -50,7 +53,7 @@ public class UpdatableMemberTest {
 
         assertNotNull(updatableMemberRepository.findByUsername(userName));
         assertEquals(userName, updatableMemberRepository.findByUsername(userName).getUsername());
-        assertNull(updatableMemberRepository.findByUsername(userName).getTeam());
+        assertNotNull(updatableMemberRepository.findByUsername(userName).getTeam());
         assertEquals(teamA.getId(), member.getTeam().getId());
     }
 
@@ -79,6 +82,7 @@ public class UpdatableMemberTest {
     }
 
     @Test
+    @Transactional
     public void testDeleteMember() throws Exception {
 
         final String userName = "member3";

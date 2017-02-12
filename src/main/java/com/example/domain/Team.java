@@ -24,13 +24,13 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team")
     private List<InsertableMember> insertableMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team")
     private List<UpdatableMember> updatableMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team")
     private List<ReadOnlyMember> readOnlyMembers = new ArrayList<>();
 
     public Team() {}

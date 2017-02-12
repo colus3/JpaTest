@@ -11,6 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
+
+import java.beans.Transient;
 
 import static org.junit.Assert.*;
 
@@ -20,7 +23,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("create")
 @SpringBootTest
-@WebAppConfiguration
 public class InsertableMemberTest {
 
     @Inject
@@ -33,6 +35,7 @@ public class InsertableMemberTest {
     private InsertableMemberRepository insertableMemberRepository;
 
     @Test
+    @Transactional
     public void testInsertMember() throws Exception {
 
         final String userName = "member1";
@@ -96,6 +99,7 @@ public class InsertableMemberTest {
     }
 
     @Test
+    @Transactional
     public void testInsertMemberUsingCascade() throws Exception {
 
         final String userName = "member4";

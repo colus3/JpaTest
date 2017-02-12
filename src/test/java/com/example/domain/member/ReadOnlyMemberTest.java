@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
 
@@ -34,6 +35,8 @@ public class ReadOnlyMemberTest {
     private ReadOnlyMemberRepository readOnlyMemberRepository;
 
     @Test
+    @Transactional
+    @Rollback(false)
     public void testInsertMember() throws Exception {
 
         final String userName = "member1";
@@ -50,7 +53,7 @@ public class ReadOnlyMemberTest {
 
         assertNotNull(readOnlyMemberRepository.findByUsername(userName));
         assertEquals(userName, readOnlyMemberRepository.findByUsername(userName).getUsername());
-        assertNull(readOnlyMemberRepository.findByUsername(userName).getTeam());
+        assertNotNull(readOnlyMemberRepository.findByUsername(userName).getTeam());
         assertEquals(teamA.getId(), member.getTeam().getId());
     }
 
