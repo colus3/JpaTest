@@ -21,7 +21,7 @@ public class Team {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL )
     private List<Member> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")

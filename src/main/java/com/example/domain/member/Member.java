@@ -18,8 +18,8 @@ public class Member {
 
     private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", columnDefinition = "팀의 외래 키")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
 
     public Member() {

@@ -1,27 +1,21 @@
-package com.example.controller;
+package com.example.domain;
 
-import com.example.domain.User;
-import com.example.domain.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by colus on 2017. 1. 12..
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("none")
 @SpringBootTest
-public class MainControllerTest {
+/**
+ * Created by colus on 2017. 2. 13..
+ */
+public class UserTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -65,4 +59,5 @@ public class MainControllerTest {
         System.out.println(choi.getFirstName() + " " + choi.getLastName());
 
     }
+
 }

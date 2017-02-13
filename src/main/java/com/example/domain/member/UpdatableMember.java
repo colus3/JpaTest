@@ -52,7 +52,7 @@ public class UpdatableMember {
 
     public void setTeam(Team team) {
         this.team = team;
-//        team.getUpdatableMembers().add(this);
+        team.getUpdatableMembers().add(this);
     }
 
     public String toString() {
